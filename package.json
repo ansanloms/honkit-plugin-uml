@@ -1,0 +1,25 @@
+{
+  "name": "honkit-plugin-uml",
+  "version": "0.0.1",
+  "description": "PlantUML Plugin for HonKit.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ansanloms/honkit-plugin-uml.git"
+  },
+  "author": "ansanloms",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ansanloms/honkit-plugin-uml/issues"
+  },
+  "homepage": "https://github.com/ansanloms/honkit-plugin-uml#readme",
+  "engines": {
+    "honkit": "*"
+  },
+  "dependencies": {
+    "node-plantuml": "^0.9.0"
+  }
+}
