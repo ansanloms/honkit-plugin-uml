@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/ansanloms/honkit-plugin-uml#readme",
   "engines": {
-    "honkit": "*"
+    "honkit": ">=3.4.1"
   },
   "dependencies": {
     "node-plantuml": "^0.9.0"

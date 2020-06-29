@@ -5,7 +5,7 @@
 ## Install
 
 ```
-npm install honkit-plugin-uml@git+https://github.com/ansanloms/honkit-plugin-uml.git --save-dev
+npm install git+https://github.com/ansanloms/honkit-plugin-uml.git --save-dev
 ```
 
 ## Usage
@@ -14,7 +14,7 @@ Add the plugin to `book.json` .
 
 ```json
 {
-  "plugins": ["uml"]
+  "plugins": ["@ansanloms/uml"]
 }
 ```
 
