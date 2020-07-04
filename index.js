@@ -25,7 +25,7 @@ module.exports = {
       Object.assign(config, this.config.get("pluginsConfig.uml", {}));
 
       page.content = await replaceAsync(page.content, /```(plantuml|puml|uml)((.*[\r\n]+)+?)?```/igm, async (match, type, uml) => {
-        if (config.format === "ascii") {
+        if (config.format === "ascii" || config.format === "unicode") {
           uml = uml.replace("@startuml", "").replace("@enduml", "");
         }
 
@@ -44,6 +44,7 @@ module.exports = {
 
         switch (config.format) {
           case "ascii":
+          case "unicode":
             const asciiHtml = buffer.toString(config.charset)
               .replace(/&/g, '&amp;')
               .replace(/</g, '&lt;')
