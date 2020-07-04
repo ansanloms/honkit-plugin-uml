@@ -31,7 +31,7 @@ Add the plugin to `book.json` .
 ```
 
 - `format`
-	+ Format of the generated images. `png` , `svg` , `ascii` .
+	+ Format of the generated images. `png` , `svg` , `ascii` (ascii character only).
 - `charset`
 	+ Use a specific charset.
 - `config`
