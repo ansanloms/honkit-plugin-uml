@@ -25,6 +25,10 @@ module.exports = {
       Object.assign(config, this.config.get("pluginsConfig.uml", {}));
 
       page.content = await replaceAsync(page.content, /```(plantuml|puml|uml)((.*[\r\n]+)+?)?```/igm, async (match, type, uml) => {
+        if (config.format === "ascii") {
+          uml = uml.replace("@startuml", "").replace("@enduml", "");
+        }
+
         const gen = plantuml.generate(uml, {
           format: config.format,
           charset: config.charset,
@@ -40,7 +44,14 @@ module.exports = {
 
         switch (config.format) {
           case "ascii":
-            return `<pre>${buffer.toString(config.charset)}</pre>`;
+            const asciiHtml = buffer.toString(config.charset)
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;')
+              .replace(/'/g, '&#039;');
+
+            return `<pre>${asciiHtml}</pre>`;
 
           case "svg":
             return `<img src="data:image/svg+xml;base64,${buffer.toString("base64")}">`;
