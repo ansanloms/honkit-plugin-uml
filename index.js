@@ -1,4 +1,5 @@
 const plantuml = require("node-plantuml");
+const clonedeep = require("lodash/cloneDeep");
 
 const defaultConfig = {
   format: "png",
@@ -20,10 +21,10 @@ async function replaceAsync(str, regex, asyncFn) {
 module.exports = {
   hooks: {
     "page:before": async function(page) {
-      const config = defaultConfig;
+      const config = clonedeep(defaultConfig);
       Object.assign(config, this.config.get("pluginsConfig.uml", {}));
 
-      page.content = await replaceAsync(page.content, /```plantuml((.*[\r\n]+)+?)?```/igm, async (match, uml) => {
+      page.content = await replaceAsync(page.content, /```(plantuml|puml|uml)((.*[\r\n]+)+?)?```/igm, async (match, type, uml) => {
         const gen = plantuml.generate(uml, {
           format: config.format,
           charset: config.charset,
@@ -45,6 +46,7 @@ module.exports = {
             return `<img src="data:image/svg+xml;base64,${buffer.toString("base64")}">`;
 
           case "png":
+          default:
             return `<img src="data:image/png;base64,${buffer.toString("base64")}">`;
         }
       });
