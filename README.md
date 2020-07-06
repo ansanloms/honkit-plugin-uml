@@ -5,7 +5,7 @@
 ## Install
 
 ```
-npm install git+https://github.com/ansanloms/honkit-plugin-uml.git --save-dev
+npm install @ansanloms/honkit-plugin-uml --save-dev
 ```
 
 ## Usage
