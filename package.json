@@ -16,6 +16,9 @@
     "url": "https://github.com/ansanloms/honkit-plugin-uml/issues"
   },
   "homepage": "https://github.com/ansanloms/honkit-plugin-uml#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "engines": {
     "honkit": ">=3.4.1"
   },
