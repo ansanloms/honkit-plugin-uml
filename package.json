@@ -1,6 +1,6 @@
 {
   "name": "@ansanloms/honkit-plugin-uml",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "PlantUML Plugin for HonKit.",
   "main": "index.js",
   "scripts": {
