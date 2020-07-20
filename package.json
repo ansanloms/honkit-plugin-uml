@@ -1,6 +1,6 @@
 {
   "name": "@ansanloms/honkit-plugin-uml",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "PlantUML Plugin for HonKit.",
   "main": "index.js",
   "scripts": {
@@ -20,10 +20,10 @@
     "access": "public"
   },
   "engines": {
-    "honkit": ">=3.4.1"
+    "honkit": ">=3.5.2"
   },
   "dependencies": {
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "node-plantuml": "^0.9.0"
   },
   "devDependencies": {

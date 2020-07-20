@@ -7,24 +7,14 @@ const defaultConfig = {
   config: "classic",
 };
 
-// https://stackoverflow.com/questions/5251520/how-do-i-escape-some-html-in-javascript/5251551
-async function replaceAsync(str, regex, asyncFn) {
-  const promises = [];
-  str.replace(regex, (match, ...args) => {
-    const promise = asyncFn(match, ...args);
-    promises.push(promise);
-  });
-  const data = await Promise.all(promises);
-  return str.replace(regex, () => data.shift());
-}
-
 module.exports = {
-  hooks: {
-    "page:before": async function(page) {
-      const config = clonedeep(defaultConfig);
-      Object.assign(config, this.config.get("pluginsConfig.uml", {}));
+  blocks: {
+    uml: {
+      process: async function(block) {
+        const config = clonedeep(defaultConfig);
+        Object.assign(config, this.config.get("pluginsConfig.uml", {}));
 
-      page.content = await replaceAsync(page.content, /```(plantuml|puml|uml)((.*[\r\n]+)+?)?```/igm, async (match, type, uml) => {
+        let uml = block.body;
         if (config.format === "ascii" || config.format === "unicode") {
           uml = uml.replace("@startuml", "").replace("@enduml", "");
         }
@@ -61,8 +51,13 @@ module.exports = {
           default:
             return `<img src="data:image/png;base64,${buffer.toString("base64")}">`;
         }
-      });
+      }
+    }
+  },
 
+  hooks: {
+    "page:before": function(page) {
+      page.content = page.content.replace(/```(uml|puml|plantuml)/i, "{% uml %}").replace(/```/, "{% enduml %}");
       return page;
     }
   },
