@@ -82,6 +82,14 @@ test("replace ```plantuml", () => {
   });
 });
 
+test("not replace ```hoge", () => {
+  expect(uml.hooks["page:before"]({
+    content: "```hoge\n" + umlData + "\n```\n\n```plantuml\n" + umlData + "\n```"
+  })).toEqual({
+    content: "```hoge\n" + umlData + "\n```\n\n{% uml %}\n" + umlData + "\n{% enduml %}"
+  });
+});
+
 test("replace with ascii format", async () => {
   uml.blocks.uml.config = {
     get: (output, config) => {
