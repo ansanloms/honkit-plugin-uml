@@ -57,7 +57,7 @@ module.exports = {
 
   hooks: {
     "page:before": function(page) {
-      page.content = page.content.replace(/```(uml|puml|plantuml)/i, "{% uml %}").replace(/```/, "{% enduml %}");
+      page.content = page.content.replace(/```(uml|puml|plantuml)((.*[\r\n]+)+?)?```/igm, match => match.replace(/```(uml|puml|plantuml)/i, "{% uml %}").replace(/```/, "{% enduml %}"));
       return page;
     }
   },
