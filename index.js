@@ -57,7 +57,12 @@ module.exports = {
 
   hooks: {
     "page:before": function(page) {
+      // markdown
       page.content = page.content.replace(/```(uml|puml|plantuml)((.*[\r\n]+)+?)?```/igm, match => match.replace(/```(uml|puml|plantuml)/i, "{% uml %}").replace(/```/, "{% enduml %}"));
+
+      // asciidoc
+      page.content = page.content.replace(/\[source,(uml|puml|plantuml)\]\r?\n----((.*[\r\n]+)+?)?----/igm, match => match.replace(/\[source,(uml|puml|plantuml)\]\r?\n----/i, "{% uml %}").replace(/----/, "{% enduml %}"));
+
       return page;
     }
   },
