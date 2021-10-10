@@ -48,6 +48,6 @@
     "prettier": "^2.4.1"
   },
   "files": [
-    "./lib/"
+    "lib/"
   ]
 }
