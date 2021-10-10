@@ -1,4 +1,4 @@
-const uml = require("./index");
+import { hooks, blocks } from "../src/index";
 
 const umlData = `
 @startuml
@@ -59,7 +59,7 @@ const result_png = "<img src=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOQ
 const result_svg = "<img src=\"data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBjb250ZW50U2NyaXB0VHlwZT0iYXBwbGljYXRpb24vZWNtYXNjcmlwdCIgY29udGVudFN0eWxlVHlwZT0idGV4dC9jc3MiIGhlaWdodD0iMjE4cHgiIHByZXNlcnZlQXNwZWN0UmF0aW89Im5vbmUiIHN0eWxlPSJ3aWR0aDoyMjlweDtoZWlnaHQ6MjE4cHg7IiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjAgMCAyMjkgMjE4IiB3aWR0aD0iMjI5cHgiIHpvb21BbmRQYW49Im1hZ25pZnkiPjxkZWZzLz48Zz48bGluZSBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDEuMDsgc3Ryb2tlLWRhc2hhcnJheTogNS4wLDUuMDsiIHgxPSIzMCIgeDI9IjMwIiB5MT0iMzUuNjA5NCIgeTI9IjE3Ny4wMTU2Ii8+PGxpbmUgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7IHN0cm9rZS1kYXNoYXJyYXk6IDUuMCw1LjA7IiB4MT0iMTk4LjUiIHgyPSIxOTguNSIgeTE9IjM1LjYwOTQiIHkyPSIxNzcuMDE1NiIvPjxyZWN0IGZpbGw9IiNGRkZGRkYiIGhlaWdodD0iMzEuNjA5NCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjU7IiB3aWR0aD0iNDQiIHg9IjgiIHk9IjMiLz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nQW5kR2x5cGhzIiB0ZXh0TGVuZ3RoPSIzMCIgeD0iMTUiIHk9IjI0LjUzMzIiPkFsaWNlPC90ZXh0PjxyZWN0IGZpbGw9IiNGRkZGRkYiIGhlaWdodD0iMzEuNjA5NCIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjU7IiB3aWR0aD0iNDQiIHg9IjgiIHk9IjE3Ni4wMTU2Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGxlbmd0aEFkanVzdD0ic3BhY2luZ0FuZEdseXBocyIgdGV4dExlbmd0aD0iMzAiIHg9IjE1IiB5PSIxOTcuNTQ4OCI+QWxpY2U8L3RleHQ+PHJlY3QgZmlsbD0iI0ZGRkZGRiIgaGVpZ2h0PSIzMS42MDk0IiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDEuNTsiIHdpZHRoPSIzOSIgeD0iMTc5LjUiIHk9IjMiLz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nQW5kR2x5cGhzIiB0ZXh0TGVuZ3RoPSIyNSIgeD0iMTg2LjUiIHk9IjI0LjUzMzIiPkJvYjwvdGV4dD48cmVjdCBmaWxsPSIjRkZGRkZGIiBoZWlnaHQ9IjMxLjYwOTQiIHN0eWxlPSJzdHJva2U6ICMwMDAwMDA7IHN0cm9rZS13aWR0aDogMS41OyIgd2lkdGg9IjM5IiB4PSIxNzkuNSIgeT0iMTc2LjAxNTYiLz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxNCIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nQW5kR2x5cGhzIiB0ZXh0TGVuZ3RoPSIyNSIgeD0iMTg2LjUiIHk9IjE5Ny41NDg4Ij5Cb2I8L3RleHQ+PHBvbHlnb24gZmlsbD0iIzAwMDAwMCIgcG9pbnRzPSIxODcsNjMuOTYwOSwxOTcsNjcuOTYwOSwxODcsNzEuOTYwOSwxOTEsNjcuOTYwOSIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7Ii8+PGxpbmUgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7IiB4MT0iMzAiIHgyPSIxOTMiIHkxPSI2Ny45NjA5IiB5Mj0iNjcuOTYwOSIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmdBbmRHbHlwaHMiIHRleHRMZW5ndGg9IjEzNSIgeD0iMzciIHk9IjYzLjEwNDUiPkF1dGhlbnRpY2F0aW9uIFJlcXVlc3Q8L3RleHQ+PHBvbHlnb24gZmlsbD0iIzAwMDAwMCIgcG9pbnRzPSI0MSw5NC4zMTI1LDMxLDk4LjMxMjUsNDEsMTAyLjMxMjUsMzcsOTguMzEyNSIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7Ii8+PGxpbmUgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7IHN0cm9rZS1kYXNoYXJyYXk6IDIuMCwyLjA7IiB4MT0iMzUiIHgyPSIxOTgiIHkxPSI5OC4zMTI1IiB5Mj0iOTguMzEyNSIvPjx0ZXh0IGZpbGw9IiMwMDAwMDAiIGZvbnQtZmFtaWx5PSJzYW5zLXNlcmlmIiBmb250LXNpemU9IjEzIiBsZW5ndGhBZGp1c3Q9InNwYWNpbmdBbmRHbHlwaHMiIHRleHRMZW5ndGg9IjE0NSIgeD0iNDciIHk9IjkzLjQ1NjEiPkF1dGhlbnRpY2F0aW9uIFJlc3BvbnNlPC90ZXh0Pjxwb2x5Z29uIGZpbGw9IiMwMDAwMDAiIHBvaW50cz0iMTg3LDEyNC42NjQxLDE5NywxMjguNjY0MSwxODcsMTMyLjY2NDEsMTkxLDEyOC42NjQxIiBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDEuMDsiLz48bGluZSBzdHlsZT0ic3Ryb2tlOiAjMDAwMDAwOyBzdHJva2Utd2lkdGg6IDEuMDsiIHgxPSIzMCIgeDI9IjE5MyIgeTE9IjEyOC42NjQxIiB5Mj0iMTI4LjY2NDEiLz48dGV4dCBmaWxsPSIjMDAwMDAwIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMyIgbGVuZ3RoQWRqdXN0PSJzcGFjaW5nQW5kR2x5cGhzIiB0ZXh0TGVuZ3RoPSI5MSIgeD0iMzciIHk9IjEyMy44MDc2Ij7oqo3oqLzjg6rjgq/jgqjjgrnjg4g8L3RleHQ+PHBvbHlnb24gZmlsbD0iIzAwMDAwMCIgcG9pbnRzPSI0MSwxNTUuMDE1NiwzMSwxNTkuMDE1Niw0MSwxNjMuMDE1NiwzNywxNTkuMDE1NiIgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7Ii8+PGxpbmUgc3R5bGU9InN0cm9rZTogIzAwMDAwMDsgc3Ryb2tlLXdpZHRoOiAxLjA7IHN0cm9rZS1kYXNoYXJyYXk6IDIuMCwyLjA7IiB4MT0iMzUiIHgyPSIxOTgiIHkxPSIxNTkuMDE1NiIgeTI9IjE1OS4wMTU2Ii8+PHRleHQgZmlsbD0iIzAwMDAwMCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTMiIGxlbmd0aEFkanVzdD0ic3BhY2luZ0FuZEdseXBocyIgdGV4dExlbmd0aD0iOTEiIHg9IjQ3IiB5PSIxNTQuMTU5MiI+6KqN6Ki844Os44K544Od44Oz44K5PC90ZXh0PjwhLS0KQHN0YXJ0dW1sDQpza2lucGFyYW0gc2hhZG93aW5nIGZhbHNlDQpoaWRlIGNpcmNsZQ0KDQpza2lucGFyYW0gbm90ZUJhY2tncm91bmRDb2xvciBXaGl0ZQ0Kc2tpbnBhcmFtIG5vdGVCb3JkZXJDb2xvciBCbGFjaw0KDQpza2lucGFyYW0gcGFja2FnZUJhY2tncm91bmRDb2xvciBXaGl0ZQ0Kc2tpbnBhcmFtIHBhY2thZ2VCb3JkZXJDb2xvciBCbGFjaw0Kc2tpbnBhcmFtIGNsYXNzQXR0cmlidXRlSWNvblNpemUgMA0Kc2tpbnBhcmFtIGNsYXNzIHsNCiAgQmFja2dyb3VuZENvbG9yIFdoaXRlDQogIEFycm93Q29sb3IgQmxhY2sNCiAgQm9yZGVyQ29sb3IgQmxhY2sNCn0NCg0Kc2tpbnBhcmFtIHNlcXVlbmNlIHsNCiAgQXJyb3dDb2xvciBCbGFjaw0KICBQYXJ0aWNpcGFudEJvcmRlckNvbG9yIEJsYWNrDQogIFBhcnRpY2lwYW50QmFja2dyb3VuZENvbG9yIFdoaXRlDQogIExpZmVMaW5lQm9yZGVyQ29sb3IgQmxhY2sNCn0NCg0Kc2tpbnBhcmFtIHVzZWNhc2Ugew0KICBCYWNrZ3JvdW5kQ29sb3IgV2hpdGUNCiAgQXJyb3dDb2xvciBCbGFjaw0KICBCb3JkZXJDb2xvciBCbGFjaw0KfQ0KQWxpY2UgLT4gQm9iOiBBdXRoZW50aWNhdGlvbiBSZXF1ZXN0DQpCb2IgLSAtPiBBbGljZTogQXV0aGVudGljYXRpb24gUmVzcG9uc2UNCg0KQWxpY2UgLT4gQm9iOiDoqo3oqLzjg6rjgq/jgqjjgrnjg4gNCkFsaWNlIDwtIC0gQm9iOiDoqo3oqLzjg6zjgrnjg53jg7PjgrkNCkBlbmR1bWwNCgpQbGFudFVNTCB2ZXJzaW9uIDEuMjAxOS4wNihTYXQgTWF5IDI1IDAyOjEwOjI1IEpTVCAyMDE5KQooR1BMIHNvdXJjZSBkaXN0cmlidXRpb24pCkphdmEgUnVudGltZTogT3BlbkpESyBSdW50aW1lIEVudmlyb25tZW50CkpWTTogT3BlbkpESyA2NC1CaXQgU2VydmVyIFZNCkphdmEgVmVyc2lvbjogMTQuMC4xKzcKT3BlcmF0aW5nIFN5c3RlbTogV2luZG93cyAxMApPUyBWZXJzaW9uOiAxMC4wCkRlZmF1bHQgRW5jb2Rpbmc6IE1TOTMyCkxhbmd1YWdlOiBqYQpDb3VudHJ5OiBKUAotLT48L2c+PC9zdmc+\">"
 
 test("replace ```uml", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "```uml\n" + umlData + "\n```"
   })).toEqual({
     content: "{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -67,7 +67,7 @@ test("replace ```uml", () => {
 });
 
 test("replace ```puml", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "```puml\n" + umlData + "\n```"
   })).toEqual({
     content: "{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -75,7 +75,7 @@ test("replace ```puml", () => {
 });
 
 test("replace ```plantuml", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "```plantuml\n" + umlData + "\n```"
   })).toEqual({
     content: "{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -83,7 +83,7 @@ test("replace ```plantuml", () => {
 });
 
 test("not replace ```hoge", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "```hoge\n" + umlData + "\n```\n\n```plantuml\n" + umlData + "\n```"
   })).toEqual({
     content: "```hoge\n" + umlData + "\n```\n\n{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -91,7 +91,7 @@ test("not replace ```hoge", () => {
 });
 
 test("replace [source,plantuml]", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "[source,plantuml]\n----\n" + umlData + "\n----"
   })).toEqual({
     content: "{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -99,7 +99,7 @@ test("replace [source,plantuml]", () => {
 });
 
 test("replace [source,puml]", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "[source,puml]\n----\n" + umlData + "\n----"
   })).toEqual({
     content: "{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -107,7 +107,7 @@ test("replace [source,puml]", () => {
 });
 
 test("replace [source,uml]", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "[source,uml]\n----\n" + umlData + "\n----"
   })).toEqual({
     content: "{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -115,7 +115,7 @@ test("replace [source,uml]", () => {
 });
 
 test("not replace [source,hoge]", () => {
-  expect(uml.hooks["page:before"]({
+  expect(hooks["page:before"]({
     content: "[source,hoge]\n----\n" + umlData + "\n----\n\n[source,plantuml]\n----\n" + umlData + "\n----"
   })).toEqual({
     content: "[source,hoge]\n----\n" + umlData + "\n----\n\n{% uml %}\n" + umlData + "\n{% enduml %}"
@@ -123,7 +123,7 @@ test("not replace [source,hoge]", () => {
 });
 
 test("replace with ascii format", async () => {
-  uml.blocks.uml.config = {
+  blocks.uml.config = {
     get: (output, config) => {
       return {
         format: "ascii",
@@ -133,13 +133,13 @@ test("replace with ascii format", async () => {
     }
   };
 
-  expect(await uml.blocks.uml.process({
+  expect(await blocks.uml.process({
     body: umlData_forAscii
   })).toEqual(result_ascii);
 });
 
 test("replace with unicode format", async () => {
-  uml.blocks.uml.config = {
+  blocks.uml.config = {
     get: (output, config) => {
       return {
         format: "unicode",
@@ -149,13 +149,13 @@ test("replace with unicode format", async () => {
     }
   };
 
-  expect(await uml.blocks.uml.process({
+  expect(await blocks.uml.process({
     body: umlData
   })).toEqual(result_unicode);
 });
 
 test("replace with svg format", async () => {
-  uml.blocks.uml.config = {
+  blocks.uml.config = {
     get: (output, config) => {
       return {
         format: "svg",
@@ -165,13 +165,13 @@ test("replace with svg format", async () => {
     }
   };
 
-  expect(await uml.blocks.uml.process({
+  expect(await blocks.uml.process({
     body: umlData
   })).toEqual(result_svg);
 });
 
 test("replace with png format", async () => {
-  uml.blocks.uml.config = {
+  blocks.uml.config = {
     get: (output, config) => {
       return {
         format: "png",
@@ -181,25 +181,25 @@ test("replace with png format", async () => {
     }
   };
 
-  expect(await uml.blocks.uml.process({
+  expect(await blocks.uml.process({
     body: umlData
   })).toEqual(result_png);
 });
 
 test("replace with default format", async () => {
-  uml.blocks.uml.config = {
+  blocks.uml.config = {
     get: (output, config) => {
       return {}
     }
   };
 
-  expect(await uml.blocks.uml.process({
+  expect(await blocks.uml.process({
     body: umlData
   })).toEqual(result_png);
 });
 
 test("replace with other format", async () => {
-  uml.blocks.uml.config = {
+  blocks.uml.config = {
     get: (output, config) => {
       return {
         format: "hoge", // 対応外の値は png になる
@@ -209,7 +209,7 @@ test("replace with other format", async () => {
     }
   };
 
-  expect(await uml.blocks.uml.process({
+  expect(await blocks.uml.process({
     body: umlData
   })).toEqual(result_png);
 });
