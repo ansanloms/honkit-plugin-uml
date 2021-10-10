@@ -10,7 +10,7 @@ const defaultConfig = {
 
 export const blocks = {
   uml: {
-    process: async function(block) {
+    process: async function (block) {
       const config = clonedeep(defaultConfig);
       Object.assign(config, this.config.get("pluginsConfig.uml", {}));
 
@@ -22,7 +22,7 @@ export const blocks = {
       const gen = generate(uml, {
         format: config.format,
         charset: config.charset,
-        config: config.config
+        config: config.config,
       });
 
       const chunks = [];
@@ -35,33 +35,50 @@ export const blocks = {
       switch (config.format) {
         case "ascii":
         case "unicode":
-          const asciiHtml = buffer.toString(config.charset)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+          const asciiHtml = buffer
+            .toString(config.charset)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
 
           return `<pre>${asciiHtml}</pre>`;
 
         case "svg":
-          return `<img src="data:image/svg+xml;base64,${buffer.toString("base64")}">`;
+          return `<img src="data:image/svg+xml;base64,${buffer.toString(
+            "base64"
+          )}">`;
 
         case "png":
         default:
-          return `<img src="data:image/png;base64,${buffer.toString("base64")}">`;
+          return `<img src="data:image/png;base64,${buffer.toString(
+            "base64"
+          )}">`;
       }
-    }
-  }
+    },
+  },
 };
 export const hooks = {
-  "page:before": function(page) {
+  "page:before": function (page) {
     // markdown
-    page.content = page.content.replace(/```(uml|puml|plantuml)((.*[\r\n]+)+?)?```/igm, match => match.replace(/```(uml|puml|plantuml)/i, "{% uml %}").replace(/```/, "{% enduml %}"));
+    page.content = page.content.replace(
+      /```(uml|puml|plantuml)((.*[\r\n]+)+?)?```/gim,
+      (match) =>
+        match
+          .replace(/```(uml|puml|plantuml)/i, "{% uml %}")
+          .replace(/```/, "{% enduml %}")
+    );
 
     // asciidoc
-    page.content = page.content.replace(/\[source,(uml|puml|plantuml)\]\r?\n----((.*[\r\n]+)+?)?----/igm, match => match.replace(/\[source,(uml|puml|plantuml)\]\r?\n----/i, "{% uml %}").replace(/----/, "{% enduml %}"));
+    page.content = page.content.replace(
+      /\[source,(uml|puml|plantuml)\]\r?\n----((.*[\r\n]+)+?)?----/gim,
+      (match) =>
+        match
+          .replace(/\[source,(uml|puml|plantuml)\]\r?\n----/i, "{% uml %}")
+          .replace(/----/, "{% enduml %}")
+    );
 
     return page;
-  }
+  },
 };

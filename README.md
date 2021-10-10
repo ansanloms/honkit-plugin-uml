@@ -31,9 +31,8 @@ Add the plugin to `book.json` .
 ```
 
 - `format`
-	+ Format of the generated images. `png` , `svg` , `ascii` (ascii character only), `unicode` .
+  - Format of the generated images. `png` , `svg` , `ascii` (ascii character only), `unicode` .
 - `charset`
-	+ Use a specific charset.
+  - Use a specific charset.
 - `config`
-	+ design settings. `classic` , `monochrome` or file path.
-
+  - design settings. `classic` , `monochrome` or file path.
