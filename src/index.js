@@ -1,17 +1,13 @@
 import { generate } from "node-plantuml";
 
-import clonedeep from "lodash/cloneDeep";
-
-const defaultConfig = {
-  format: "png",
-  charset: "utf8",
-  config: "classic",
-};
-
 export const blocks = {
   uml: {
     process: async function (block) {
-      const config = clonedeep(defaultConfig);
+      const config = {
+        format: "png",
+        charset: "utf8",
+        config: "classic",
+      };
       Object.assign(config, this.config.get("pluginsConfig.uml", {}));
 
       let uml = block.body;
@@ -30,12 +26,12 @@ export const blocks = {
         chunks.push(chunk);
       }
 
-      const buffer = Buffer.concat(chunks);
+      const buf = Buffer.concat(chunks);
 
       switch (config.format) {
         case "ascii":
         case "unicode":
-          const asciiHtml = buffer
+          const asciiHtml = buf
             .toString(config.charset)
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -46,15 +42,13 @@ export const blocks = {
           return `<pre>${asciiHtml}</pre>`;
 
         case "svg":
-          return `<img src="data:image/svg+xml;base64,${buffer.toString(
+          return `<img src="data:image/svg+xml;base64,${buf.toString(
             "base64"
           )}">`;
 
         case "png":
         default:
-          return `<img src="data:image/png;base64,${buffer.toString(
-            "base64"
-          )}">`;
+          return `<img src="data:image/png;base64,${buf.toString("base64")}">`;
       }
     },
   },
